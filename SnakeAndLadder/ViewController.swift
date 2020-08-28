@@ -42,7 +42,8 @@ class ViewController: UIViewController {
         ladderSetup()
 
         playersSetup()
-        
+//        boardService.setShouldGameContinueTillLastPlayer(true)
+//        boardService.setShouldAllowMultipleDiceRollOnSix(true)
         boardService.startGame()
         
     }

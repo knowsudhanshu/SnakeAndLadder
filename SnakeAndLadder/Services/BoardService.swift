@@ -130,7 +130,12 @@ class BoardService {
     }
     
     private func getTotalValueAfterDiceRoll() -> Int {
-        DiceService.roll()
+        var diceValue = DiceService.roll()
+        if shouldAllowMultipleDiceRollOnSix && diceValue == 6 {
+            print("Dice roll ended up with 6")
+            diceValue = diceValue + getTotalValueAfterDiceRoll()
+        }
+        return diceValue
     }
     
     private func hasPlayerWon(_ player: Player) -> Bool {
@@ -138,7 +143,17 @@ class BoardService {
     }
     
     private func isGameCompleted() -> Bool {
-        playerQueueHandler.players.count < initialNumberOfPlayers
+        let remainingPlayers = playerQueueHandler.players.count
+        
+        if shouldGameContinueTillLastPlayer {
+            return remainingPlayers == 0
+        }
+        else if remainingPlayers < initialNumberOfPlayers {
+            return true
+        }
+        else {
+            return false
+        }
     }
     
     public func startGame() {
